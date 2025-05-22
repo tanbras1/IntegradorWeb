@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simulação de Empréstimo</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    </head>
+    <body>
+
+
+        <!-- Topo do site -->
+        <header class="bg-primary text-white text-center py-4">
+            <h1>Empréstimos VVV</h1>
+            <h3>O melhor empréstimo pra você</h3>
+        </header>
+
+        <!-- Menu Navegação -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">Empréstimos VVV-Cadastro</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sobre Mim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Serviços</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contato</a>
+                        </li>
+                        <li> <!-- Botão de Sair -->
+                            <a href="/login/logout" class=" text-end me-5 btn btn-danger">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Se usuário for CLIENTE -->
+        <main class="container mt-4">
+            <div class="ms-3" th:if="${usuario == 'cliente'}">
+                <h4>Área do Cliente</h4>
+
+                <div class="border p-4 rounded shadow">
+                    <form action="/pagina-emprestimo/gravar" method="post" >
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome do Cliente</label>
+                            <input type="text" id="nome" name="nome_emprestimo" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="valor" class="form-label">Valor do Empréstimo:</label>
+                            <input type="number" id="valor" name="valor_emprestimo" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="parcelas" class="form-label">Quantidade de Parcelas:</label>
+                            <input type="number" id="parcelas" name="numero_parcelas" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de Empréstimo:</label>
+                            <select id="tipo" name="tipo_emprestimo" class="form-select">
+                                <option value="consignado">Consignado (1.5% a.m.)</option>
+                                <option value="pessoal">Pessoal (3.5% a.m.)</option>
+                            </select>
+                        </div>
+
+                        <!--<fieldset class="mb-3">
+                            <legend class="fs-5">Tipo de Empréstimo</legend>
+                            <div class="form-check">
+                                <input type="radio" id="consignado" name="tipoServico" value="Consignado" class="form-check-input" required>
+                                <label for="consignado" class="form-check-label">Consignado</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="pessoal" name="tipoServico" value="Pessoal" class="form-check-input">
+                                <label for="pessoal" class="form-check-label">Empréstimo Pessoal</label>
+                            </div>
+                        </fieldset>-->
+
+                        <button type="submit" class="btn btn-primary">Simular Empréstimo</button>
+
+                        <!-- Exibe os resultados apenas após a simulação ser feita -->
+                        <div class="ms-3 mt-3" th:if="${simulacao != null}">
+                            <p class="h3">Resultado da Simulação</p>
+                            <p th:if="${simulacao.cadastro != null}">
+                                <strong>ID:</strong> <span th:text="${simulacao.cadastro.id}"></span>
+                            </p>
+                            <p><strong>Nome:</strong> <span th:text="${simulacao.nomeCliente}"></span></p>
+                            <p><strong>Tipo:</strong> <span th:text="${simulacao.tipo}"></span></p>
+                            <p><strong>Número de Parcelas:</strong> <span th:text="${simulacao.parcelas}"></span></p>
+                            <p><strong>Valor total com juros:</strong>
+                                <span th:text="'R$ ' + ${#numbers.formatDecimal(simulacao.valor, 1, 2)}"></span>
+                            </p>
+                            <p><strong>Valor por parcela:</strong>
+                                <span
+                                    th:text="'R$ ' + ${#numbers.formatDecimal((simulacao.valor / simulacao.parcelas), 1, 2)}"></span>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+
+                <!-- Exibir informações do usuário logado abaixo da simulação -->
+                <div class="col-md-12 mt-4 ms-3">
+                    <h3>Seus Dados Cadastrados</h3>
+
+                    <table class="table" th:if="${cadastro != null}">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Endereço</th>
+                                <th>Data de Nascimento</th>
+                                <th>Tipo de Serviço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        <form action="/cadastro/editar" method="post">
+                            <td><input type="text" name="nomeCliente" th:value="${cadastro.nomeCliente}" class="form-control" /></td>
+                            <td><input type="email" name="email" th:value="${cadastro.email}" class="form-control" /></td>
+                            <td><input type="text" name="endereco" th:value="${cadastro.endereco}" class="form-control" /></td>
+                            <td><input type="date" name="dataNascimento" class="form-control"
+                                       th:value="${#temporals.format(cadastro.dataNascimento, 'yyyy-MM-dd')}" required/></td>
+                            <td><input type="text" name="tipoServico" th:value="${cadastro.tipoServico}" class="form-control" /></td>
+
+                            <!-- Campo oculto para manter o ID -->
+                            <input type="hidden" name="id" th:value="${cadastro.id}">
+
+                            <td>
+                                <button type="submit" class="btn btn-secondary">Editar</button>
+                            </td>
+
+                        </form>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+            <!-- Se usuário for FUNCIONÁRIO -->
+            <div class="ms-3" th:if="${usuario == 'funcionario'}">
+                <h4>Área do Funcionário</h4>
+                <a href="/lista-clientes" class="btn btn-warning">Ver Clientes</a>
+                <a href="/buscar-cliente" class="btn btn-secondary">Buscar Cliente</a>
+            </div>
+
+            <!-- Se usuário for ADM -->
+            <div class="ms-3" th:if="${usuario == 'adm'}">
+                <h4>Área do Administrador</h4>
+                <div class="col-md-12 mt-4">
+                    <form action="/pagina-emprestimo" method="get" class="mb-3">
+                        <label>Buscar por ID:</label>
+                        <input type="number" name="idBusca" class="form-control" placeholder="Digite o ID">
+
+                        <label>Buscar por Nome:</label>
+                        <input type="text" name="nomeBusca" class="form-control" placeholder="Digite o Nome">
+
+                        <button type="submit" class="btn btn-primary mt-2">Buscar Usuário</button>
+                    </form>
+
+                    <!--Formulário de edição -->
+                    <div th:if="${cadastro != null}">
+                        <h3>Editar Usuário</h3>
+                        <form action="/cadastro/editar" method="post">
+                            <input type="hidden" name="id" th:value="${cadastro.id}" />
+
+                            <label>Nome:</label>
+                            <input type="text" name="nomeCliente" th:value="${cadastro.nomeCliente}" class="form-control" />
+
+                            <label>Email:</label>
+                            <input type="email" name="email" th:value="${cadastro.email}" class="form-control" />
+
+                            <label>Endereço:</label>
+                            <input type="text" name="endereco" th:value="${cadastro.endereco}" class="form-control" />
+
+                            <label>Data de Nascimento:</label>
+                            <input type="date" name="dataNascimento" class="form-control"
+                                   th:value="${#temporals.format(cadastro.dataNascimento, 'yyyy-MM-dd')}" required />
+
+                            <label>Tipo de Usuário:</label>
+                            <select name="usuario" class="form-control">
+                                <option value="cliente" th:selected="${cadastro.usuario == 'cliente'}">Cliente</option>
+                                <option value="funcionario" th:selected="${cadastro.usuario == 'funcionario'}">Funcionário</option>
+                                <option value="adm" th:selected="${cadastro.usuario == 'adm'}">Administrador</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </form>
+                    </div>
+
+                    <!--Lista todos os usuários cadastrados -->
+                    <h3 class="mt-4">Lista de Usuários Cadastrados</h3>
+                    <table class="table" th:if="${cadastros != null}">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Endereço</th>
+                                <th>Data de Nascimento</th>
+                                <th>Tipo de Usuário</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="cadastro : ${cadastros}">
+                                <td th:text="${cadastro.nomeCliente}"></td>
+                                <td th:text="${cadastro.email}"></td>
+                                <td th:text="${cadastro.endereco}"></td>
+                                <td th:text="${#temporals.format(cadastro.dataNascimento, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${cadastro.usuario}"></td>
+                                <td>
+                                    <!--<a th:href="@{/pagina-emprestimo?idBusca={id}(id=${cadastro.id})}" class="btn btn-secondary">Editar</a>-->
+                                    <a href="/pagina-emprestimo" class="btn btn-secondary mt-2">Cancelar Edição</a> <!--Botão que recarrega a página -->
+                                    <form action="/pagina-emprestimo/excluir" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" th:value="${cadastro.id}">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+    </body>
+</html>
+
+

@@ -6,7 +6,7 @@ document.getElementById("cadastroForm").addEventListener("submit", function(even
     let dataNascimento = document.getElementById("dataNascimento");
     let endereco = document.getElementById("endereco");
     let email = document.getElementById("email");
-    let tipo = document.querySelector('input[name="tipo"]:checked'); // Verifica qual radio foi selecionado
+    let tipo = document.querySelector('input[name="tipoServico"]:checked'); // Verifica qual radio foi selecionado
 
     // Validar se todos os campos foram preenchidos corretamente
     let camposObrigatorios = [nome, dataNascimento, endereco, email];
