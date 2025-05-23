@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--: Essa linha define as configurações de visualização da página em dispositivos móveis.-->
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title> Senac-EAD: Cadastro</title>
+        <title>Empréstimos VVV</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     </head>
@@ -154,49 +154,6 @@
                 </div>
             </div>
             
-            <!--Listagem de usuario-->
-            <div class="col-md-12">
-                    <h3>Lista de Clientes Cadastrados</h3>
-
-                    <table class="table" th:if="${cadastros != null}">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Endereço</th>
-                                <th>Data de Nascimento</th>
-                                <th>Tipo de Serviço</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="cadastro : ${cadastros}">
-                        <form action="/cadastro/editar" method="post">
-                            <td><input type="text" name="nomeCliente" th:value="${cadastro.nomeCliente}" class="form-control" /></td>
-                            <td><input type="email" name="email" th:value="${cadastro.email}" class="form-control" /></td>
-                            <td><input type="text" name="endereco" th:value="${cadastro.endereco}" class="form-control" /></td>
-                            <td><input type="date" id="dataNascimento" name="dataNascimento" class="form-control"
-                                       th:value="${#temporals.format(cadastro.dataNascimento, 'yyyy-MM-dd')}" required/></td>
-                            <td><input type="text" name="tipoServico" th:value="${cadastro.tipoServico}" class="form-control" /></td>
-
-                            <!-- Campo oculto para manter o ID -->
-                            <input type="hidden" name="id" th:value="${cadastro.id}">
-
-                            <td>
-                                <button type="submit" class="btn btn-secondary">Editar</button>
-                            </td>
-                        </form>
-
-                        <td>
-                            <form action="/cadastro/excluir" method="post">
-                                <input type="hidden" name="id" th:value="${cadastro.id}">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
         </main>
 
         <!-- Rodapé -->

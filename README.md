@@ -5,7 +5,7 @@ Projeto integrador, aplicando conhecimentos em: HTML, CSS, JavaScript, Java e My
 ## Funcionalidades
 - <b>Simulação de Empréstimo</b>: Permite ao usuário calcular as condições do empréstimo com base em taxas e prazos escolhidos.
 - <b>Cadastro de Usuário</b>: Sistema de registro seguro e fácil, garantindo confidencialidade e proteção de dados.
-- <b>Contratação de Emprestimos</b>: Permite que o cliente faça seu emprestimo de forma rápida e segura.
+- <b>Login com senha: Simulação de Emprestimos com id</b>: Permite que o cliente faça seu um login e simule seu emprestimo de forma rápida e segura.
 ## Status do projeto (em desenvolvimento)
 ## 🖥 Tecnologias utilizadas
 - <b>HTML</b>
